@@ -1,18 +1,40 @@
+name: Déploiement           # Nom du workflow
+on: 
+    push                    # Événement(s)
 env:
+    USERNAME: joumannihma
+    IMAGE_NAME: deer
     ENVNAME: 5ika-deer-joumannihma
+jobs:
+    build-docker-image:     # Nom du job
+        runs-on: ubuntu-latest  # OS utilisé pour executé le job
+        steps:                  # Suite de commandes / tâches à effectuer
+            - name: Check out code
+              uses: actions/checkout@v3
+            - run: docker login -u $USERNAME -p $PASSWORD
+              env:
+                PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
+            - run: docker build -t $USERNAME/$IMAGE_NAME .
+            - run: docker push $USERNAME/$IMAGE_NAME
+            - name: Docker Hub Description
+              uses: peter-evans/dockerhub-description@v3.4.2
+              with :
+                username : ${{env.USERNAME}}
+                password : ${{secrets.DOCKER_HUB_PASSWORD}}
+                repository : ${{env.USERNAME}}/${{env.IMAGE_NAME}}
 
-  deploy-to-jelastic:
-    runs-on: ubuntu-latest
-    container: mwienk/jelastic-cli  # Image Docker dans laquelle les steps seront exécutées
-    needs: build-docker-image       # Indique qu'il faut attendre le job de build
-    steps:
-        # Petit fixe nécessaire pour la suite
-      - run: ln -s /root/jelastic-cli.jar /github/home/jelastic-cli.jar
-        # Authentification auprès de l'API de Jelastic Infomaniak
-      - run: /root/jelastic/users/authentication/signin --login "$JELASTIC_USERNAME" --password "$JELASTIC_PASSWORD" --platformUrl app.jpc.infomaniak.com
-        env:
-          JELASTIC_USERNAME: ${{ secrets.JELASTIC_USERNAME }}
-          JELASTIC_PASSWORD: ${{ secrets.JELASTIC_PASSWORD }}
-        # Utilisation de l'API de Jelastic pour redéployer l'image Docker utilisé dans son environnement
-      - run: /root/jelastic/environment/control/redeploycontainersbygroup --envName $ENVNAME --nodeGroup cp --tag latest
-
+    deploy-to-jelastic:
+                    runs-on: ubuntu-latest
+                    container: mwienk/jelastic-cli  # Image Docker dans laquelle les steps seront exécutées
+                    needs: build-docker-image       # Indique qu'il faut attendre le job de build
+                    steps:
+                        # Petit fixe nécessaire pour la suite
+                      - run: ln -s /root/jelastic-cli.jar /github/home/jelastic-cli.jar
+                        # Authentification auprès de l'API de Jelastic Infomaniak
+                      - run: /root/jelastic/users/authentication/signin --login "$JELASTIC_USERNAME" --password "$JELASTIC_PASSWORD" --platformUrl app.jpc.infomaniak.com
+                        env:
+                          JELASTIC_USERNAME: ${{ secrets.JELASTIC_USERNAME }}
+                          JELASTIC_PASSWORD: ${{ secrets.JELASTIC_PASSWORD }}
+                        # Utilisation de l'API de Jelastic pour redéployer l'image Docker utilisé dans son environnement
+                      - run: /root/jelastic/environment/control/redeploycontainersbygroup --envName $ENVNAME --nodeGroup cp --tag latest
+                
