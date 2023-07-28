@@ -68,7 +68,7 @@
     height: 0;
   }
   80% {
-    height: 0;
+    height: 0px;
   }
   90% {
     height: 40px;
@@ -134,7 +134,7 @@ html {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #ff55ff;
+  background-color: #cff3f1;
   overflow: hidden;
 }
 .eye.left {
@@ -169,7 +169,7 @@ html {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #17f517;
+  background-color: #f5c117;
   display: block;
   content: " ";
   height: 0;
@@ -181,7 +181,7 @@ html {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #212121;
+  background-color: #f30000;
   position: absolute;
   top: 162.5px;
   left: 110px;
@@ -230,7 +230,7 @@ html {
 }
 
 .ear {
-  background-color: #17f517;
+  background-color: #ee820f;
   width: 62.5px;
   height: 37.5px;
   border-radius: 30% 30% 50% 50%;
@@ -290,7 +290,7 @@ html {
   z-index: -1;
   width: 50px;
   height: 75px;
-  background-color: #795548;
+  background-color: #884f3b;
   border-radius: 40% 40% 0% 0%;
 }
 .wood::before {
@@ -298,7 +298,7 @@ html {
   content: " ";
   width: 25px;
   height: 50px;
-  background-color: #795548;
+  background-color: #9f624c;
   border-radius: 40% 40% 0% 0%;
   transform: rotate(-40deg);
   position: absolute;
