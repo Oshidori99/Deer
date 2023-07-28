@@ -15,3 +15,10 @@ jobs:
                 PASSWORD: ${{secrets.DOCKER_HUB_PASSWORD}}
             - run: docker build -t $USERNAME/$IMAGE_NAME .
             - run: docker push $USERNAME/$IMAGE_NAME
+            - name: Docker Hub Description
+              uses: peter-evans/dockerhub-description@v3.4.2
+              with :
+                username : $USERNAME
+                password : ${{secrets.DOCKER_HUB_PASSWORD1}}
+                repository : $USERNAME/$IMAGE_NAME
+
