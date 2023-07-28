@@ -1,0 +1,3 @@
+#dir
+
+konnichiha minnasan
